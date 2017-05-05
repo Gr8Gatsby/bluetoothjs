@@ -12,7 +12,7 @@ if (typeof Windows !== 'undefined') {
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("enumerateBtn").addEventListener("click", handleEnumerateBtnClick);
     document.getElementById("reloadBtn").addEventListener("click", reload);
-    hideLoader();
+    hideloader();
     deviceWatcher = null;
 });
 
@@ -42,7 +42,7 @@ function startBleDeviceWatcher() {
     deviceWatcher.addEventListener("removed", deviceWatcherRemoved);
     deviceWatcher.addEventListener("enumerationcompleted", deviceWatcherEnumerationCompleted);
     deviceWatcher.addEventListener("stopped", deviceWatcherStopped);
-    
+
     showloader();
     deviceWatcher.start();
 }
@@ -72,7 +72,7 @@ function deviceWatcherStopped(evt) {
 }
 
 function displayDevices() {
-    hideLoader();
+    hideloader();
     var deviceAnchorElement = document.getElementById("devices")
     for (var i = 0; i < devices.length; i++) {
         var deviceDiv = document.createElement("div");
@@ -85,7 +85,7 @@ function displayDevices() {
     }
 }
 
-function hideLoader(){
+function hideloader(){
     document.getElementById("loader").style.display = 'none';
 }
 
