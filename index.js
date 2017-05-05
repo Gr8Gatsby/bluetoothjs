@@ -2,6 +2,7 @@
 //var deviceWatcher = Windows.Devices.Enumeration.DeviceWatcher;
 var deviceWatcher = null;
 var devices = new Array();
+var devicesScanned = 0;
 
 // Check for the Windows namespace
 if (typeof Windows !== 'undefined') {
@@ -28,7 +29,7 @@ function handleEnumerateBtnClick(evt) {
 
 
 function startBleDeviceWatcher() {
-
+    showLoader();
     requestedProperties = ["System.Devices.Aep.DeviceAddress", "System.Devices.Aep.IsConnected"];
     deviceWatcher = Windows.Devices.Enumeration.DeviceInformation.createWatcher(
         'System.Devices.Aep.ProtocolId:="{bb7bb05e-5972-42b5-94fc-76eaa7084d49}"',
@@ -48,6 +49,7 @@ function deviceWatcherAdded(evt) {
     console.log("deviceWatcherAdded");
     // Add device information to devices array
     devices.push(evt.detail[0]);
+    document.querySelector("#found").innerHTML = (++devicesScanned);
 }
 
 function deviceWatcherUpdated(evt) {
@@ -68,6 +70,7 @@ function deviceWatcherStopped(evt) {
 }
 
 function displayDevices() {
+    hideLoader();
     var deviceAnchorElement = document.getElementById("devices")
     for (var i = 0; i < devices.length; i++) {
         var deviceDiv = document.createElement("div");
@@ -78,4 +81,12 @@ function displayDevices() {
         deviceDiv.appendChild(t);
         deviceAnchorElement.appendChild(deviceDiv);
     }
+}
+
+function hideLoader(){
+    document.getElementById("loader").style.display = 'none';
+}
+
+function showloader(){
+    document.getElementById("loader").style.display = 'block';
 }
