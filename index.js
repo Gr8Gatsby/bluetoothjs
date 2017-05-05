@@ -3,6 +3,7 @@
 var deviceWatcher = null;
 var devices = new Array();
 
+// Check for the Windows namespace
 if (typeof Windows !== 'undefined') {
     // The Windows APIs are projected in the DOM
     //deviceWatcher = Windows.Devices.Enumeration.DeviceWatcher;
