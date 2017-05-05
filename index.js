@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("enumerateBtn").addEventListener("click", handleEnumerateBtnClick);
     document.getElementById("reloadBtn").addEventListener("click", reload);
     hideLoader();
+    deviceWatcher = null;
 });
 
 function handleEnumerateBtnClick(evt) {
