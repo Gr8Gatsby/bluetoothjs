@@ -31,7 +31,6 @@ function handleEnumerateBtnClick(evt) {
 
 
 function startBleDeviceWatcher() {
-    showLoader();
     requestedProperties = ["System.Devices.Aep.DeviceAddress", "System.Devices.Aep.IsConnected"];
     deviceWatcher = Windows.Devices.Enumeration.DeviceInformation.createWatcher(
         'System.Devices.Aep.ProtocolId:="{bb7bb05e-5972-42b5-94fc-76eaa7084d49}"',
@@ -43,7 +42,8 @@ function startBleDeviceWatcher() {
     deviceWatcher.addEventListener("removed", deviceWatcherRemoved);
     deviceWatcher.addEventListener("enumerationcompleted", deviceWatcherEnumerationCompleted);
     deviceWatcher.addEventListener("stopped", deviceWatcherStopped);
-
+    
+    showloader();
     deviceWatcher.start();
 }
 
