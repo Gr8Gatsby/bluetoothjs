@@ -11,7 +11,7 @@ if (typeof Windows !== 'undefined') {
 }
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("enumerateBtn").addEventListener("click", handleEnumerateBtnClick);
-    document.querySelector("#reloadContent").addEventListener("click", reload);
+    document.getElementById("reloadBtn").addEventListener("click", reload);
     hideLoader();
 });
 
