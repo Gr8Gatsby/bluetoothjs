@@ -12,6 +12,7 @@ if (typeof Windows !== 'undefined') {
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("enumerateBtn").addEventListener("click", handleEnumerateBtnClick);
     document.querySelector("#reloadContent").addEventListener("click", reload);
+    hideLoader();
 });
 
 function handleEnumerateBtnClick(evt) {
