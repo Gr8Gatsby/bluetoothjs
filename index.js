@@ -9,8 +9,8 @@ if (typeof Windows !== 'undefined') {
 }
 document.addEventListener("DOMContentLoaded", function () {
     // Setup initial page state
-    document.querySelector("#enumerateBtn").addEventListener("click", handleEnumerateBtnClick);
-    document.querySelector("#reloadBtn").addEventListener("click", reload);
+    document.getElementById("enumerateBtn").addEventListener("click", handleEnumerateBtnClick);
+    document.getElementById("reloadBtn").addEventListener("click", reload);
     hideloader();
     deviceWatcher = null;
 });
@@ -32,7 +32,7 @@ function handleEnumerateBtnClick(evt) {
 
 
 function startBleDeviceWatcher() {
-    document.querySelector("#enumerateBtnClick").innerHTML = "Scanning...";
+    document.getElementById("enumerateBtnClick").innerHTML = "Scanning...";
     requestedProperties = ["System.Devices.Aep.DeviceAddress", "System.Devices.Aep.IsConnected"];
     deviceWatcher = Windows.Devices.Enumeration.DeviceInformation.createWatcher(
         'System.Devices.Aep.ProtocolId:="{bb7bb05e-5972-42b5-94fc-76eaa7084d49}"',
@@ -53,7 +53,7 @@ function deviceWatcherAdded(evt) {
     console.log("deviceWatcherAdded");
     // Add device information to devices array
     devices.push(evt.detail[0]);
-    document.querySelector("#found").innerHTML = (devices.length);
+    document.getElementById("found").innerHTML = (devices.length);
     displayDevices();
 }
 
@@ -67,7 +67,7 @@ function deviceWatcherRemoved(evt) {
 
 function deviceWatcherEnumerationCompleted(evt) {
     console.log("deviceWatcherEnumerationCompleted");
-    document.querySelector("#enumerateBtnClick").innerHTML = "Start scan";
+    document.getElementById("enumerateBtnClick").innerHTML = "Start scan";
     displayDevices();
 }
 
@@ -77,7 +77,7 @@ function deviceWatcherStopped(evt) {
 
 function displayDevices() {
     hideloader();
-    var deviceAnchorElement = document.querySelector("#devices");
+    var deviceAnchorElement = document.getElementById("devices");
     deviceAnchorElement.innerHTML = "";
     for (var i = 0; i < devices.length; i++) {
         var deviceDiv = document.createElement("div");
@@ -91,11 +91,11 @@ function displayDevices() {
 }
 
 function hideloader(){
-    document.querySelector("#loader").style.display = 'none';
+    document.getElementById("loader").style.display = 'none';
 }
 
 function showloader(){
-    document.querySelector("#loader").style.display = 'block';
+    document.getElementById("loader").style.display = 'block';
 }
 
 function reload(){
