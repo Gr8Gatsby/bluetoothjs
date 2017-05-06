@@ -2,7 +2,6 @@
 //var deviceWatcher = Windows.Devices.Enumeration.DeviceWatcher;
 var deviceWatcher = null;
 var devices = new Array();
-var devicesScanned = 0;
 
 // Check for the Windows namespace
 if (typeof Windows !== 'undefined') {
@@ -10,8 +9,8 @@ if (typeof Windows !== 'undefined') {
 }
 document.addEventListener("DOMContentLoaded", function () {
     // Setup initial page state
-    document.getElementById("enumerateBtn").addEventListener("click", handleEnumerateBtnClick);
-    document.getElementById("reloadBtn").addEventListener("click", reload);
+    document.querySelector("#enumerateBtn").addEventListener("click", handleEnumerateBtnClick);
+    document.querySelector("#reloadBtn").addEventListener("click", reload);
     hideloader();
     deviceWatcher = null;
 });
@@ -53,7 +52,7 @@ function deviceWatcherAdded(evt) {
     console.log("deviceWatcherAdded");
     // Add device information to devices array
     devices.push(evt.detail[0]);
-    document.querySelector("#found").innerHTML = (++devicesScanned);
+    document.querySelector("#found").innerHTML = (devices.length);
     displayDevices();
 }
 
@@ -76,7 +75,7 @@ function deviceWatcherStopped(evt) {
 
 function displayDevices() {
     hideloader();
-    var deviceAnchorElement = document.getElementById("devices");
+    var deviceAnchorElement = document.querySelector("#devices");
     deviceAnchorElement.innerHTML = "";
     for (var i = 0; i < devices.length; i++) {
         var deviceDiv = document.createElement("div");
@@ -90,11 +89,11 @@ function displayDevices() {
 }
 
 function hideloader(){
-    document.getElementById("loader").style.display = 'none';
+    document.querySelector("#loader").style.display = 'none';
 }
 
 function showloader(){
-    document.getElementById("loader").style.display = 'block';
+    document.querySelector("#loader").style.display = 'block';
 }
 
 function reload(){
