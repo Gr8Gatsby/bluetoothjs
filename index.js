@@ -7,9 +7,9 @@ var devicesScanned = 0;
 // Check for the Windows namespace
 if (typeof Windows !== 'undefined') {
     // The Windows APIs are projected in the DOM
-    //deviceWatcher = Windows.Devices.Enumeration.DeviceWatcher;
 }
 document.addEventListener("DOMContentLoaded", function () {
+    // Setup initial page state
     document.getElementById("enumerateBtn").addEventListener("click", handleEnumerateBtnClick);
     document.getElementById("reloadBtn").addEventListener("click", reload);
     hideloader();
@@ -18,14 +18,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function handleEnumerateBtnClick(evt) {
     console.log("enumerateBtnClick occured");
+    // Check for Windows namespace
     if (typeof Windows !== 'undefined') {
-
         if (deviceWatcher == null) {
             deviceWatcher = Windows.Devices.Enumeration.DeviceWatcher;
             startBleDeviceWatcher();
         } else {
             
         }
+    } else {
+        console.log("Windows namespace is not defined")
     }
 }
 
@@ -52,6 +54,7 @@ function deviceWatcherAdded(evt) {
     // Add device information to devices array
     devices.push(evt.detail[0]);
     document.querySelector("#found").innerHTML = (++devicesScanned);
+    displayDevices();
 }
 
 function deviceWatcherUpdated(evt) {
@@ -73,7 +76,8 @@ function deviceWatcherStopped(evt) {
 
 function displayDevices() {
     hideloader();
-    var deviceAnchorElement = document.getElementById("devices")
+    var deviceAnchorElement = document.getElementById("devices");
+    deviceAnchorElement.innerHTML = "";
     for (var i = 0; i < devices.length; i++) {
         var deviceDiv = document.createElement("div");
         var id = document.createAttribute("id");
