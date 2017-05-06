@@ -32,7 +32,7 @@ function handleEnumerateBtnClick(evt) {
 
 
 function startBleDeviceWatcher() {
-    document.getElementById("enumerateBtnClick").innerHTML = "Scanning...";
+    document.getElementById("enumerateBtnClick").firstChild.textContent = "Scanning...";
     requestedProperties = ["System.Devices.Aep.DeviceAddress", "System.Devices.Aep.IsConnected"];
     deviceWatcher = Windows.Devices.Enumeration.DeviceInformation.createWatcher(
         'System.Devices.Aep.ProtocolId:="{bb7bb05e-5972-42b5-94fc-76eaa7084d49}"',
@@ -53,7 +53,7 @@ function deviceWatcherAdded(evt) {
     console.log("deviceWatcherAdded");
     // Add device information to devices array
     devices.push(evt.detail[0]);
-    document.getElementById("found").innerHTML = (devices.length);
+    document.getElementById("found").firstChild.textContent = (devices.length);
     displayDevices();
 }
 
