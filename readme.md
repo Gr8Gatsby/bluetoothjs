@@ -1,6 +1,6 @@
 ## Bluetooth WinRT Sample
 
-1. Device Watcher
+1. Device Watcher (basic sample working)
 2. GATT Server foreground (in progress)
 3. GATT Server background (not started)
 
