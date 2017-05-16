@@ -67,7 +67,7 @@ function deviceWatcherRemoved(evt) {
 
 function deviceWatcherEnumerationCompleted(evt) {
     console.log("deviceWatcherEnumerationCompleted");
-    document.getElementById("enumerateBtnClick").innerHTML = "Start scan";
+    document.getElementById("enumerateBtn").innerHTML = "Start scan";
     displayDevices();
 }
 
