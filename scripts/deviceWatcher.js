@@ -32,7 +32,7 @@ function handleEnumerateBtnClick(evt) {
 
 
 function startBleDeviceWatcher() {
-    document.getElementById("enumerateBtnClick").firstChild.textContent = "Scanning...";
+    document.getElementById("enumerateBtn").firstChild.textContent = "Scanning...";
     requestedProperties = ["System.Devices.Aep.DeviceAddress", "System.Devices.Aep.IsConnected"];
     deviceWatcher = Windows.Devices.Enumeration.DeviceInformation.createWatcher(
         'System.Devices.Aep.ProtocolId:="{bb7bb05e-5972-42b5-94fc-76eaa7084d49}"',
