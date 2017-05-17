@@ -53,7 +53,10 @@ function deviceWatcherAdded(evt) {
     console.log("deviceWatcherAdded");
     // Add device information to devices array
     devices.push(evt.detail[0]);
+    //This worked on previous builds, but not this JS seems to be running on a 
+    //different thread
     //document.getElementById("found").firstChild.textContent = (devices.length);
+    //
     displayDevices();
 }
 
