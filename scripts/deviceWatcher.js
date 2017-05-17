@@ -53,7 +53,7 @@ function deviceWatcherAdded(evt) {
     console.log("deviceWatcherAdded");
     // Add device information to devices array
     devices.push(evt.detail[0]);
-    document.getElementById("found").firstChild.textContent = (devices.length);
+    //document.getElementById("found").firstChild.textContent = (devices.length);
     displayDevices();
 }
 
