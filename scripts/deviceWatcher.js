@@ -89,12 +89,13 @@ function displayDevices() {
         id.value = devices[i].id;
         
         var t = document.createTextNode(devices[i].name);
+
         var deviceIDDiv = document.createElement("div");
         var t2 = document.createTextNode(devices[i].id);
         
         deviceDiv.setAttributeNode(id);
         
-        deviceDiv.appendChild(t1);
+        deviceDiv.appendChild(t);
         deviceIDDiv.appendChild(t2);
         deviceAnchorElement.appendChild(deviceDiv);
         deviceAnchorElement.appendChild(deviceIDDiv);
