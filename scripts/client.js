@@ -16,12 +16,18 @@ document.addEventListener("DOMContentLoaded", function () {
     if (typeof bluetooth === 'undefined') { throw "Bluetooth does not exist."; }
     if (typeof genericAttributeProfile === 'undefined') { throw "GenericAttributeProfile does not exist."; }
     if (typeof enumeration === 'undefined') { throw "Enumeration does not exist."; }
-    if (typeof background === 'undefined') { throw "Background does not exist."; }
 
     // BLE variables
-    var bluetoothLEDevice = new Windows.Devices.Bluetooth.bluetoothLEDevice();
-    var selectedCharacteristic = null;
+    var bluetoothLEDevice = bluetooth.BluetoothLEDevice.fromIdAsync("BluetoothLE#BluetoothLEb4:ae:2b:d7:0b:ed-c6:0d:eq:54:a1:15")
+        .then(deviceFromIdAsyncCompleted, deviceFromIdAsyncError)
+        .done(console.log("Promise is finished for fromIdAsync"));
 
-    var registeredCharacteristic = null;
-    var presentationFormat = null;
 });
+
+function deviceFromIdAsyncCompleted (device) {
+
+}
+
+function deviceFromIdAsyncError (error) {
+
+}
