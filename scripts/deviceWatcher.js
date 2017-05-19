@@ -83,13 +83,21 @@ function displayDevices() {
     var deviceAnchorElement = document.getElementById("devices");
     deviceAnchorElement.innerHTML = "";
     for (var i = 0; i < devices.length; i++) {
+
         var deviceDiv = document.createElement("div");
         var id = document.createAttribute("id");
         id.value = devices[i].id;
+        
         var t = document.createTextNode(devices[i].name);
+        var deviceIDDiv = document.createElement("div");
+        var t2 = document.createTextNode(devices[i].id);
+        
         deviceDiv.setAttributeNode(id);
-        deviceDiv.appendChild(t);
+        
+        deviceDiv.appendChild(t1);
+        deviceIDDiv.appendChild(t2);
         deviceAnchorElement.appendChild(deviceDiv);
+        deviceAnchorElement.appendChild(deviceIDDiv);
     }
 }
 
