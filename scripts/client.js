@@ -120,9 +120,19 @@ function connectToDevice(id) {
 }
 
 function deviceFromIdAsyncCompleted(device) {
-
+    device.getGattServicesAsync(api.bluetooth.BluetoothCacheMode.uncached)
+        .then(getGattServicesCompleted, getGattServicesError)
+        .done(console.log("Promise is finised for getGattServicesAsync"));
 }
 
 function deviceFromIdAsyncError(error) {
+
+}
+
+function getGattServicesCompleted(obj) {
+
+}
+
+function getGattServicesError(obj) {
 
 }
