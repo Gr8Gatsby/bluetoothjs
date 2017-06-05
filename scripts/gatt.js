@@ -60,21 +60,17 @@ function deviceWatcherAdded(evt) {
     //console.log("deviceWatcherAdded");
     // Add device information to devices array
     api.devices.push(evt.detail[0]);
-    if (evt.detail[0].name === "Tesla") {
-        renderDataToDOM("----", "----");
-        renderDataToDOM("name", evt.detail[0].name);
-        renderDeviceConnectButtonToDOM(evt.detail[0].id);
-        renderDataToDOM("id", evt.detail[0].id);
-        renderDataToDOM("Signal Strength", evt.detail[0].properties['System.Devices.Aep.SignalStrength']);
-        renderDataToDOM("Can Pair", evt.detail[0].pairing.canPair);
-        //renderDataToDOM("kind", evt.detail[0].kind);
-        //renderDataToDOM("Protection Level", evt.detail[0].pairing.protectionLevel);
-        //renderDataToDOM("Is Default", evt.detail[0].isDefault);
-        //renderDataToDOM("Is Enabled", evt.detail[0].isEnabled);
+    
+    renderDataToDOM("----", "----");
+    renderDataToDOM("name", evt.detail[0].name);
+    renderDeviceConnectButtonToDOM(evt.detail[0].id);
+    renderDataToDOM("id", evt.detail[0].id);
+    renderDataToDOM("Signal Strength", evt.detail[0].properties['System.Devices.Aep.SignalStrength']);
+    renderDataToDOM("Can Pair", evt.detail[0].pairing.canPair);
 
-        evt.detail[0].getGlyphThumbnailAsync()
-            .then(glyphCompleted, glyphError)
-    }
+    evt.detail[0].getGlyphThumbnailAsync()
+        .then(glyphCompleted, glyphError)
+    
 }
 
 function glyphCompleted(image) {
@@ -88,16 +84,16 @@ function glyphError(obj) {
 }
 
 function deviceWatcherUpdated(evt) {
-    if (evt.detail[0].name === "Tesla") {
-        renderDataToDOM("updated", evt.detail[0].id);
-    }
+    
+    //renderDataToDOM("updated", evt.detail[0].id);
+    
     //console.log("deviceWatcherUpdated");
 }
 
 function deviceWatcherRemoved(evt) {
-    if (evt.detail[0].name === "Tesla") {
-        renderDataToDOM("removed", evt.detail[0].id);
-    }
+
+    renderDataToDOM("removed", evt.detail[0].id);
+
     //console.log("deviceWatcherRemoved");
 }
 
@@ -144,51 +140,44 @@ function connectToDevice(id) {
 }
 
 function deviceFromIdAsyncCompleted(device) {
-    device.getGattServicesAsync(api.bluetooth.BluetoothCacheMode.uncached)
-        .then(getGattServicesCompleted, getGattServicesError)
-        .done(console.log("Promise is finised for getGattServicesAsync"));
+    if (device.getGattServicesAsync != 'undefined') {
+        device.getGattServicesAsync(api.bluetooth.BluetoothCacheMode.uncached)
+            .then(getGattServicesCompleted, getGattServicesError)
+            .done(console.log("Promise is finised for getGattServicesAsync"));
+    } else {
+        console.log("No GattServices")
+    }
 }
 
 function deviceFromIdAsyncError(error) {
 
 }
 
-function getGattServicesCompleted(service) {
-    if (service.status == 0) {
-        
-        if (service.services.length > 0) {
-            for (i = 0; i < service.services.length; i++) {
-                api.services.push(service.services[i]);
-                console.log("Opening " + service.services[i]);
-                service.services[i].getCharacteristicsAsync(api.bluetooth.GenericAttributeProfile.GattSharingMode.exclusive)
-                    .then(function (characteristic) {
-                        for (i = 0; i < characteristic.characteristics.length; i++) {
-                            characteristic.characteristics[i].readValueAsync(api.bluetooth.BluetoothCacheMode.uncached)
-                                .then(function (value) {
-                                    if (value.protocolError == 2) {
-                                        console.log("Error: ReadNotPermitted");
-                                    } else {
-                                        console.log("Value: " + value.value);
-                                    }
-                                })
-                        }
-                    }, function (error) {
+async function getGattServicesCompleted({ services, status }) {
+    if (status != 0) {
+        return; // Status greater than zero is 
+    }
+    // Access Windows Runtime
+    const {GenericAttributeProfile, BluetoothCacheMode} = api.bluetooth;
+    for (let service of services) {
+        api.services.push(service);
+        const { characteristics } = await service.getCharacteristicsAsync(GenericAttributeProfile.GattSharingMode.exclusive)
+        // interact with the characteristics
+        for (let characteristic of characteristics) {
+            const { protocolError, value } = await characteristic.readValueAsync(BluetoothCacheMode.uncached)
+            if (protocolError == 2) {
+                console.log("Error: ReadNotPermitted");
+            } else {
+                if (value.length > 0) {
+                    let arr = new Uint8Array(value.length);
+                    let dataReader = Windows.Storage.Streams.DataReader.fromBuffer(value);
+                    dataReader.readBytes(arr)
+                    dataReader.close();
+                }
 
-                    }) 
-                
-                    //.openAsync(api.bluetooth.GenericAttributeProfile.GattSharingMode.sharedReadOnly)
-                    //.then(function (gattServiceOpenAsyncCompleted, gattServiceOpenAsyncError) {
-                    //    if (gattServiceOpenAsyncCompleted == 1) {
-
-                    //    }
-                    //})
-                    //.done(console.log("Promise for gattSerivceOpenAsync is finished"))
+                console.log("Value: " + value);
             }
-        } else {
-            console.log("GattService: No services available");
         }
-    } else {
-        //TODO:?
     }
 }
 
