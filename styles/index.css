@@ -1,3 +1,13 @@
 ﻿body {
-    font-family:Arial;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size:small;
+}
+
+.label {
+    font-weight:800;
+    padding-right:5px;
+}
+
+.labelContainer {
+    padding-bottom:5px;
 }
