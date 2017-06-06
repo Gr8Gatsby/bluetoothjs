@@ -20,6 +20,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     api.bluetooth.BluetoothAdapter.getDefaultAsync()
         .then(bluetoothAdapterCreated, bluetoothAdapterFailed);
+
+    document.getElementById("reloadBtn").addEventListener("click", reload);
 });
 
 function bluetoothAdapterCreated(adapter) {

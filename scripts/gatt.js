@@ -21,6 +21,8 @@ document.addEventListener("DOMContentLoaded", function () {
     api.devices = new Array();
     api.bluetooth.BluetoothAdapter.getDefaultAsync()
         .then(bluetoothAdapterCreated, bluetoothAdapterFailed);
+
+    document.getElementById("reloadBtn").addEventListener("click", reload);
 });
 
 function bluetoothAdapterCreated(adapter) {
@@ -191,4 +193,8 @@ function gattServiceOpenAsyncCompleted(connection) {
 
 function gattServiceOpenAsyncError(obj) {
 
+}
+
+function reload(){
+    document.location.reload(true);
 }
