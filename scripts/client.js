@@ -138,3 +138,7 @@ function getGattServicesCompleted(obj) {
 function getGattServicesError(obj) {
 
 }
+
+function reload(){
+    document.location.reload(true);
+}
