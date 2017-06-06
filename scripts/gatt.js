@@ -1,4 +1,4 @@
-var api = {
+var api = { // Object to store common references
     bluetooth: null,
     genericAttributionProfile: null,
     enumeration: null,
@@ -6,7 +6,7 @@ var api = {
     devices: new Array(),
     services: new Array()
 }
-
+// Setup the API references, check for undefined namespaces, and check for the bluetooth adapter
 document.addEventListener("DOMContentLoaded", function () {
     api.bluetooth = Windows.Devices.Bluetooth;
     api.genericAttributionProfile = Windows.Devices.Bluetooth.GenericAttributeProfile;
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById("reloadBtn").addEventListener("click", reload);
 });
-
+// Display the bluetooth support from the adapter
 function bluetoothAdapterCreated(adapter) {
     renderDataToDOM("Bluetooth Address", adapter.bluetoothAddress);
     renderDataToDOM("DeviceID", adapter.deviceId);
@@ -37,11 +37,11 @@ function bluetoothAdapterCreated(adapter) {
     // start a device watcher
     startDeviceWatcher();
 }
-
+// Handle error from bluetooth adapter
 function bluetoothAdapterFailed(error) {
     renderDataToDOM("Error", error);
 }
-
+// this function starts scanning for BlueTooth Devices
 function startDeviceWatcher() {
     var requestedProperties = ["System.Devices.Aep.DeviceAddress", "System.Devices.Aep.IsConnected","System.Devices.Aep.SignalStrength"];
     api.deviceWatcher = Windows.Devices.Enumeration.DeviceInformation.createWatcher(
@@ -57,32 +57,18 @@ function startDeviceWatcher() {
 
     api.deviceWatcher.start();
 }
-
+// Handle new bluetooth device being discovered
 function deviceWatcherAdded(evt) {
     //console.log("deviceWatcherAdded");
     // Add device information to devices array
     api.devices.push(evt.detail[0]);
-    
+    // Show UI for device
     renderDataToDOM("----", "----");
     renderDataToDOM("name", evt.detail[0].name);
     renderDeviceConnectButtonToDOM(evt.detail[0].id);
     renderDataToDOM("id", evt.detail[0].id);
     renderDataToDOM("Signal Strength", evt.detail[0].properties['System.Devices.Aep.SignalStrength']);
     renderDataToDOM("Can Pair", evt.detail[0].pairing.canPair);
-
-    evt.detail[0].getGlyphThumbnailAsync()
-        .then(glyphCompleted, glyphError)
-    
-}
-
-function glyphCompleted(image) {
-    if (image.size > 0) {
-        //TODO get image
-    }
-}
-
-function glyphError(obj) {
-
 }
 
 function deviceWatcherUpdated(evt) {
@@ -107,7 +93,6 @@ function deviceWatcherEnumerationCompleted(evt) {
 function deviceWatcherStopped(evt) {
     //console.log("deviceWatcherStopped");
 }
-
 // Helper function to display data
 function renderDataToDOM(label, text) {
     var infoElem = document.createElement("div");
@@ -125,22 +110,21 @@ function renderDataToDOM(label, text) {
     infoElem.appendChild(textElem);
     document.body.appendChild(infoElem);
 }
-
+// add a connect button to the HTML DOM with a registered click callback
 function renderDeviceConnectButtonToDOM(id) {
-
     var buttonElem = document.createElement("button");
     buttonElem.setAttribute("id", id);
     buttonElem.appendChild(document.createTextNode("Connect"));
     buttonElem.addEventListener('click', function () { connectToDevice(id); });
     document.body.appendChild(buttonElem);
 }
-
+// Handle connecting to a specific device
 function connectToDevice(id) {
     var bluetoothLEDevice = api.bluetooth.BluetoothLEDevice.fromIdAsync(id)
         .then(deviceFromIdAsyncCompleted, deviceFromIdAsyncError)
         .done(console.log("Promise is finished for fromIdAsync"));
 }
-
+// Successful connection to device
 function deviceFromIdAsyncCompleted(device) {
     if (device.getGattServicesAsync != 'undefined') {
         device.getGattServicesAsync(api.bluetooth.BluetoothCacheMode.uncached)
@@ -150,49 +134,41 @@ function deviceFromIdAsyncCompleted(device) {
         console.log("No GattServices")
     }
 }
-
+// Error connecting to device
 function deviceFromIdAsyncError(error) {
-
+    //TODO: Error message
 }
-
+// Check for Gatt Services
 async function getGattServicesCompleted({ services, status }) {
     if (status != 0) {
         return; // Status greater than zero is 
     }
-    // Access Windows Runtime
+    // Access Windows Runtime namespaces
     const {GenericAttributeProfile, BluetoothCacheMode} = api.bluetooth;
-    for (let service of services) {
-        api.services.push(service);
+    for (let service of services) {                     // Iterate through services
+        api.services.push(service);                     // Store reference to service
         const { characteristics } = await service.getCharacteristicsAsync(GenericAttributeProfile.GattSharingMode.exclusive)
         // interact with the characteristics
-        for (let characteristic of characteristics) {
+        for (let characteristic of characteristics) {   // Iterate through characteristics
             const { protocolError, value } = await characteristic.readValueAsync(BluetoothCacheMode.uncached)
-            if (protocolError == 2) {
+            if (protocolError == 2) {                   // Handle common error
                 console.log("Error: ReadNotPermitted");
-            } else {
+            } else {                                    // Read values
                 if (value.length > 0) {
                     let arr = new Uint8Array(value.length);
                     let dataReader = Windows.Storage.Streams.DataReader.fromBuffer(value);
                     dataReader.readBytes(arr)
                     dataReader.close();
                 }
-
+                // Log value
                 console.log("Value: " + value);
             }
         }
     }
 }
-
+// Handle GattServicesError
 function getGattServicesError(obj) {
-
-}
-
-function gattServiceOpenAsyncCompleted(connection) {
-
-}
-
-function gattServiceOpenAsyncError(obj) {
-
+    //TODO: Error message
 }
 
 function reload(){
