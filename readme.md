@@ -12,5 +12,3 @@ Within the Hosted Web App [Visual Studio](https://www.visualstudio.com/thank-you
 1. Application Tab -> Start Page set to: https://bluetoothjs.azurewebsites.net
 2. Capabilities Tab -> Check the Bluetooth box
 3. Content URIs Tab -> Add include rule for https://bluetoothjs.azurewebsites.net to access All WinRT (a.k.a. Windows Runtime APIs)
-
-## New Section
