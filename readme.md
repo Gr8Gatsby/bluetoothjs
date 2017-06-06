@@ -1,6 +1,6 @@
 ## Bluetooth Windows Runtime (WinRT) Sample
 1. Device Watcher (basic sample working)
-2. GATT Server foreground (basic sample working) - Requires a device with Bluetooth 4.1 to advertise.
+2. GATT Server foreground (basic sample working) - Requires a device with Bluetooth 4.1 advertising a Gatt Service.
 3. Bluetooth client (basic sample working)
 
 ## Description
